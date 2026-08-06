@@ -279,7 +279,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 3rem;
+  padding: 0 4.2rem;
 }
 .modal-image-wrap img {
   max-width: 100%;
@@ -331,7 +331,7 @@ body {
 .modal-wa-btn:hover { background: var(--gold); color: var(--deep); }
 
 @media (max-width: 420px) {
-  .modal-image-wrap { padding: 0 2.2rem; max-height: 52vh; }
+  .modal-image-wrap { padding: 0 3.2rem; max-height: 52vh; }
   .modal-nav { width: 34px; height: 34px; font-size: 1.3rem; }
 }
 </style>
@@ -365,8 +365,17 @@ body {
       <span class="link-arrow">→</span>
     </div>
 
+    <div class="link-btn" onclick="openGallery('familia')">
+      <div class="link-thumb"><img src="familia1.jpg" alt="Ensaio de Família"></div>
+      <div class="link-text">
+        <div class="link-title">Ensaio de Família</div>
+        <div class="link-sub">Momentos em conjunto, sem pose forçada</div>
+      </div>
+      <span class="link-arrow">→</span>
+    </div>
+
     <div class="link-btn" onclick="openGallery('feminino')">
-      <div class="link-thumb"><img src="feminino16.jpg" alt="Ensaio Feminino"></div>
+      <div class="link-thumb"><img src="feminino1.jpg" alt="Ensaio Feminino"></div>
       <div class="link-text">
         <div class="link-title">Ensaio Feminino</div>
         <div class="link-sub">Sua essência em fotos</div>
@@ -454,11 +463,15 @@ const galleries = {
     wa: 'https://wa.me/5527995118412?text=%5BBio%5D%20Ol%C3%A1%2C%20Raquel%21%20Vi%20seu%20portf%C3%B3lio%20de%20ensaios%20de%20casal%20e%20me%20apaixonei%20pelo%20seu%20trabalho.%20Quero%20saber%20mais%20sobre%20os%20pacotes%20dispon%C3%ADveis'
   },
   gestante: {
-    photos: Array.from({length:12}, (_,i)=>`gestante${i+1}.jpg`),
+    photos: Array.from({length:22}, (_,i)=>`gestante${i+1}.jpg`),
     wa: 'https://wa.me/5527995118412?text=%5BBio%5D%20Ol%C3%A1%2C%20Raquel%21%20Vi%20seu%20trabalho%20com%20ensaios%20gestante%20e%20quero%20saber%20mais%20sobre%20como%20agendar%20o%20meu'
   },
+  familia: {
+    photos: Array.from({length:8}, (_,i)=>`familia${i+1}.jpg`),
+    wa: 'https://wa.me/5527995118412?text=%5BBio%5D%20Ol%C3%A1%2C%20Raquel%21%20Vi%20seu%20trabalho%20com%20ensaio%20de%20fam%C3%ADlia%20e%20quero%20saber%20mais%20sobre%20como%20agendar%20o%20meu'
+  },
   feminino: {
-    photos: Array.from({length:24}, (_,i)=>`feminino${i+1}.jpg`),
+    photos: Array.from({length:37}, (_,i)=>`feminino${i+1}.jpg`),
     wa: 'https://wa.me/5527995118412?text=%5BBio%5D%20Ol%C3%A1%2C%20Raquel%21%20Vi%20seus%20ensaios%20femininos%20e%20adorei%21%20Gostaria%20de%20saber%20mais%20sobre%20como%20agendar%20o%20meu'
   },
   infantil: {
