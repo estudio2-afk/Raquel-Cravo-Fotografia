@@ -125,6 +125,14 @@
   @media(max-width:500px){.wa{right:18px}}
   .about{background-image:url(img/simbolo-about.png),linear-gradient(rgba(33,31,31,.78),rgba(33,31,31,.78)),url(img/tex-brilho.webp);background-repeat:no-repeat;background-size:440px,cover,cover;background-position:right -170px bottom -170px,center,center}
 </style>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','4619072328378345');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=4619072328378345&ev=PageView&noscript=1" alt=""></noscript>
+<!-- End Meta Pixel -->
 </head>
 <body>
 <div class="app">
@@ -225,6 +233,12 @@
   var WA="5527995118412";
   var M={hero:"Oi, Raquel! Quero agendar um ensaio.",profissional:"Oi, Raquel! Quero fazer um ensaio profissional.",afetivos:"Oi, Raquel! Quero ver os ensaios afetivos.",final:"Oi, Raquel! Vim pela bio e quero conversar.",float:"Oi, Raquel! Vim pela bio e quero conversar."};
   document.querySelectorAll(".js-wa").forEach(function(a){a.href="https://wa.me/"+WA+"?text="+encodeURIComponent(M[a.dataset.o]||M.final);a.target="_blank";a.rel="noopener"});
+
+  /* Pixel: clique em qualquer botão de WhatsApp = evento Contact */
+  document.addEventListener("click",function(e){
+    var a=e.target.closest&&e.target.closest("a[href^='https://wa.me/']");
+    if(a&&window.fbq) fbq("track","Contact",{content_name:a.dataset.o||a.id||"galeria"});
+  });
 
   /* galeria dos cards */
   var G={marca:{t:"Marca",n:9},profissional:{t:"Corporativo",n:18},casal:{t:"Casal",n:17},gestante:{t:"Gestante",n:41},familia:{t:"Família",n:10},feminino:{t:"Feminino",n:21},aniversario:{t:"Aniversário",n:16}};
