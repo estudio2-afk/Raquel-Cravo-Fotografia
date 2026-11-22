@@ -125,6 +125,9 @@
   @media(max-width:500px){.wa{right:18px}}
   .about{background-image:url(img/simbolo-about.png),linear-gradient(rgba(33,31,31,.78),rgba(33,31,31,.78)),url(img/tex-brilho.webp);background-repeat:no-repeat;background-size:440px,cover,cover;background-position:right -170px bottom -170px,center,center}
 </style>
+<!-- Google Tag Manager -->
+<script>window.dataLayer=window.dataLayer||[];(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NFR8CDZ4');</script>
+<!-- End Google Tag Manager -->
 <!-- Meta Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
@@ -135,6 +138,10 @@ fbq('track','PageView');
 <!-- End Meta Pixel -->
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NFR8CDZ4" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
 <div class="app">
 
   <header class="hero">
@@ -234,12 +241,16 @@ fbq('track','PageView');
   var M={hero:"Oi, Raquel! Quero agendar um ensaio.",profissional:"Oi, Raquel! Quero fazer um ensaio profissional.",afetivos:"Oi, Raquel! Quero ver os ensaios afetivos.",final:"Oi, Raquel! Vim pela bio e quero conversar.",float:"Oi, Raquel! Vim pela bio e quero conversar."};
   document.querySelectorAll(".js-wa").forEach(function(a){a.href="https://wa.me/"+WA+"?text="+encodeURIComponent(M[a.dataset.o]||M.final);a.target="_blank";a.rel="noopener"});
 
+  /* dataLayer (GTM): eventos enviados ao GA4 e a outras tags */
+  function dl(o){ (window.dataLayer=window.dataLayer||[]).push(o); }
   /* Pixel: clique em qualquer botão de WhatsApp = evento Contact */
   document.addEventListener("click",function(e){
     var a=e.target.closest&&e.target.closest("a[href^='https://wa.me/']");
-    if(a&&window.fbq){
+    if(a){
       var doCard=(a.id==="gal-wa"&&cur)?G[cur].t:"Geral"; /* de dentro da galeria: o card; botões gerais: "Geral" */
-      fbq("track","Contact",{content_name:doCard,content_category:"Portfólio",origem:a.dataset.o||a.id||"galeria"});
+      var org=a.dataset.o||a.id||"galeria";
+      if(window.fbq) fbq("track","Contact",{content_name:doCard,content_category:"Portfólio",origem:org});
+      dl({event:"clique_whatsapp",card:doCard,origem:org});
     }
   });
 
@@ -256,7 +267,7 @@ fbq('track','PageView');
     var im=new Image(); im.onload=function(){ if(t!==tk)return; gimg.src=im.src; gimg.alt=g.t+" — foto "+idx+" de "+g.n; gimg.classList.add("on") };
     im.src=src(cur,idx);
     /* Pixel: passou da 5ª foto = lead engajada (1x por abertura de galeria) */
-    if(!deep&&idx>=5&&window.fbq){ deep=true; fbq("trackCustom","PortfolioEngajado",{content_name:g.t}); }
+    if(!deep&&idx>=5){ deep=true; if(window.fbq) fbq("trackCustom","PortfolioEngajado",{content_name:g.t}); dl({event:"portfolio_engajado",card:g.t}); }
     gcount.textContent=(idx<10?"0":"")+idx+" / "+(g.n<10?"0":"")+g.n;
     gprev.disabled=idx<=1; gnext.disabled=idx>=g.n;
     [idx-1,idx+1].forEach(function(j){ if(j>=1&&j<=g.n){ var p=new Image(); p.src=src(cur,j) } });
@@ -266,6 +277,7 @@ fbq('track','PageView');
     /* Pixel: abriu o portfólio de um card (interesse, sem contato) */
     deep=false;
     if(window.fbq) fbq("track","ViewContent",{content_name:G[k].t,content_category:"Portfólio"});
+    dl({event:"card_aberto",card:G[k].t});
     gtit.innerHTML=G[k].t;
     gwa.href="https://wa.me/"+WA+"?text="+encodeURIComponent("Oi, Raquel! Vi o portfólio de "+G[k].t.toLowerCase()+" e quero agendar um ensaio.");
     gwa.target="_blank"; gwa.rel="noopener";
