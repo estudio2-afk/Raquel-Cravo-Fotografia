@@ -237,7 +237,10 @@ fbq('track','PageView');
   /* Pixel: clique em qualquer botão de WhatsApp = evento Contact */
   document.addEventListener("click",function(e){
     var a=e.target.closest&&e.target.closest("a[href^='https://wa.me/']");
-    if(a&&window.fbq) fbq("track","Contact",{content_name:a.dataset.o||a.id||"galeria"});
+    if(a&&window.fbq){
+      var doCard=(a.id==="gal-wa"&&cur)?G[cur].t:"Geral"; /* de dentro da galeria: o card; botões gerais: "Geral" */
+      fbq("track","Contact",{content_name:doCard,content_category:"Portfólio",origem:a.dataset.o||a.id||"galeria"});
+    }
   });
 
   /* galeria dos cards */
@@ -245,19 +248,24 @@ fbq('track','PageView');
   var gal=document.getElementById("gal"),gimg=document.getElementById("gal-img"),gtit=document.getElementById("gal-title"),
       gcount=document.getElementById("gal-count"),gprev=document.getElementById("gal-prev"),gnext=document.getElementById("gal-next"),
       gx=document.getElementById("gal-x"),gwa=document.getElementById("gal-wa"),stage=document.getElementById("gal-stage");
-  var cur=null,idx=0,opener=null,tk=0;
+  var cur=null,idx=0,opener=null,tk=0,deep=false;
   function src(k,i){return "img/galeria/"+k+"-"+(i<10?"0":"")+i+".webp"}
   function show(i){
     var g=G[cur]; idx=Math.max(1,Math.min(g.n,i));
     var t=++tk; gimg.classList.remove("on");
     var im=new Image(); im.onload=function(){ if(t!==tk)return; gimg.src=im.src; gimg.alt=g.t+" — foto "+idx+" de "+g.n; gimg.classList.add("on") };
     im.src=src(cur,idx);
+    /* Pixel: passou da 5ª foto = lead engajada (1x por abertura de galeria) */
+    if(!deep&&idx>=5&&window.fbq){ deep=true; fbq("trackCustom","PortfolioEngajado",{content_name:g.t}); }
     gcount.textContent=(idx<10?"0":"")+idx+" / "+(g.n<10?"0":"")+g.n;
     gprev.disabled=idx<=1; gnext.disabled=idx>=g.n;
     [idx-1,idx+1].forEach(function(j){ if(j>=1&&j<=g.n){ var p=new Image(); p.src=src(cur,j) } });
   }
   function openG(k,btn){
     cur=k; opener=btn; gal.hidden=false; document.body.classList.add("lock");
+    /* Pixel: abriu o portfólio de um card (interesse, sem contato) */
+    deep=false;
+    if(window.fbq) fbq("track","ViewContent",{content_name:G[k].t,content_category:"Portfólio"});
     gtit.innerHTML=G[k].t;
     gwa.href="https://wa.me/"+WA+"?text="+encodeURIComponent("Oi, Raquel! Vi o portfólio de "+G[k].t.toLowerCase()+" e quero agendar um ensaio.");
     gwa.target="_blank"; gwa.rel="noopener";
